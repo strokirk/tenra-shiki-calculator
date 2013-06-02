@@ -1,0 +1,59 @@
+input.die_1,
+input.die_2,
+input.die_3 {
+    padding: 0.4em;
+    margin: 0.1em;
+}
+
+input.die_1 {
+    background-color: #CC0000;
+}
+
+input.die_2 {
+    background-color: #00CC00;
+}
+
+input.die_3 {
+    background-color: #7777EE;
+}
+
+.selected-die-1,
+.selected-die-2,
+.selected-die-3  {
+    border: 0.25em solid black;
+}
+
+.die_row {
+    display:block;
+    height:33%;
+}
+
+#wrapper {
+    width: 600px;
+}
+
+#die_controls {
+    display: block;
+    border: 1px solid black;
+    width: 400px;
+    height: 100px; 
+}
+
+.die_numbers {
+    display: block;
+    height: 100px;
+    width: 190px;
+    padding-left: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+    float: left;
+}
+
+.die_accept,
+.die_roll {
+    margin-top: auto;
+    margin-bottom: auto;
+    float: left;
+    height: 100%;
+    width: 25%;
+}
