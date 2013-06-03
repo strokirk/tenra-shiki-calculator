@@ -98,11 +98,12 @@ function update_shiki_div() {
     if (!current_shiki) current_shiki = new Shiki();
     
     var powerdiv = $("#shiki-power-list");
-    $("#shiki-power-list").append(powerdiv);
     powerdiv.empty();
     var ul = $('<ul>');
     
-    powerdiv.append("<input type='button' value='Save shiki'>");
+    var save_btn = $("<input id='#save-shiki' type='button' value='Save shiki'>");
+    save_btn.click( save_shiki_div );
+    powerdiv.append(save_btn);
     powerdiv.append("<p>Total shiki cost: "+current_shiki.getTotalCost()+"</p>");
     powerdiv.append(ul);
     
@@ -110,7 +111,7 @@ function update_shiki_div() {
         var power = current_shiki.powerList[index];
         var li = $('<li>');
         if (power.cost == 0)
-            li.append(power.name).css('color','red');
+            li.append(power.name).addClass("danger");
         else if (power.level > 0)
             li.append(power.name+" "+power.level).prop("title","Creation points per level: "+power.cost);
         else
@@ -118,6 +119,32 @@ function update_shiki_div() {
         ul.append(li);
     }
     
+};
+
+function save_shiki_div() {
+    $("#shiki-power-list").empty();
+    var ul = $('<ul>');
+    var list = current_shiki.getShikiPowers();
+    for (var index in list) {
+        var power = list[index];
+        if (power.cost == 0) continue; // remove stuff like "roll again"
+        
+        var li = $('<li>');
+        if (power.level > 0)
+            li.append(power.name+" "+power.level).prop("title","Creation points per level: "+power.cost);
+        else
+            li.append(power.name).prop("title","Creation points: "+power.cost);
+        ul.append(li);
+    }
+    var pinfo = $("<p>Creation points: "+current_shiki.getTotalCost()+"</p>");
+    
+    var danger = [];
+    if ("Runaway" in list) danger[danger.length] = "Runaway";
+    if ("The shiki becomes chimera" in list) danger[danger.length] = "Chimera";
+    danger = danger.join(" ");
+    if (danger)
+        pinfo.append(", <span class='danger'>"+danger+"</span>");
+    $("#shiki-power-list").append(pinfo).append(ul);
 };
 
 // A class to keep track of the applied shiki powers
