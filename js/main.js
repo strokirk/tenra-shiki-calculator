@@ -129,11 +129,15 @@ function save_shiki_div() {
         var power = list[index];
         if (power.cost == 0) continue; // remove stuff like "roll again"
         
-        var li = $('<li>');
-        if (power.level > 0)
-            li.append(power.name+" "+power.level).prop("title","Creation points per level: "+power.cost);
-        else
-            li.append(power.name).prop("title","Creation points: "+power.cost);
+        var li = $('<li>'), text, title;
+        if (power.level > 0) {
+            text = power.name+" "+power.level; 
+            title = "Creation points per level: "+power.cost;
+        } else {
+            text = power.name; 
+            title = "Creation points: "+power.cost;
+        }
+        li.append(text).prop("title",title);
         ul.append(li);
     }
     var pinfo = $("<p>Creation points: "+current_shiki.getTotalCost()+"</p>");
@@ -144,6 +148,8 @@ function save_shiki_div() {
     danger = danger.join(" ");
     if (danger)
         pinfo.append(", <span class='danger'>"+danger+"</span>");
+    if (current_shiki.getTotalCost() != 0)
+        pinfo.append("<br/>"+"Attributes: "+current_shiki.getAttributes()+", Skills: "+current_shiki.getSkills()+",  Vitality: "+current_shiki.getVitality())
     $("#shiki-power-list").append(pinfo).append(ul);
 };
 
@@ -182,24 +188,31 @@ function save_shiki_div() {
         }
         return this.uniquePowerList;
     }
+    /* Shiki ability score table: 
+    CP: Attributes - Skills - Vitality
+    1-6:   1-1-2
+    7-12:  2-1-2
+    13-18: 3-2-3 
+    19-24: 4-2-4
+    25-30: 5-3-5
+    31-36: 6-3-6
+    37-42: 7-4-7
+    for every 6 pts over 42, +1 to Attributes & Vitality */
+    this.getAttributes = function() { 
+        return Math.ceil(this.getTotalCost() / 6); 
+    }
+    this.getSkills = function() {
+        var x = Math.ceil(this.getTotalCost() / 12); return (x > 4) ? 4 : x;
+    }
+    this.getVitality = function() { 
+        var x = Math.ceil(this.getTotalCost() / 6); return (x < 2) ? 2 : x; 
+    }
+    
 }
 
 // Shiki creation points
 // Creation points = Knowledge * Skill modifier
 // Skill modifier = Dots - 1, where 0 or 1 dots is impossible
-
-// Shiki ability score table
-/* Creation limits: Attributes, Skills, Vitality
-1-6: 1-1-2
-7-12: 2-1-2
-13-18: 3-2-3 
-19-24: 4-2-4
-25-30: 5-3-5
-31-36: 6-3-6
-37-42: 7-4-7
-for every 6 pts over 42, +1 to Attributes & Vitality
-
-*/
 
 // Order of events
 // choose Random creation or (Crafted creation)
