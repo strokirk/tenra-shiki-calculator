@@ -6,37 +6,39 @@
 <body>
     <div id="wrapper">
         <h1>Shiki creation</h1>
-        <p style="margin-left:1em">Roll an ability randomly, or input with 1d<span stylE="color:#CC0000">6</span><span stylE="color:#00CC00">6</span> for ability choice, 1d6 ability strength, then press accept.</p>
+        <p id="description">Roll an ability randomly, or use buttons below to enter die results. 
+        Enter 1d<span class="die-1">6</span><span class="die-2">6</span> ability choice, 
+        1d<span class="die-3">6</span> ability strength, then press "accept".</p>
         <form>
-        <div id="die_controls">
-            <input type="button" value="Roll Dice" class="die_roll">
-            <div class="die_numbers">
-                <div class="die_row">
-                    <input type="button" name="die-1" value="1" class="die_1">
-                    <input type="button" value="2" class="die_1">
-                    <input type="button" value="3" class="die_1">
-                    <input type="button" value="4" class="die_1">
-                    <input type="button" value="5" class="die_1">
-                    <input type="button" value="6" class="die_1">
+        <div id="die-controls">
+            <input type="button" value="Roll Dice" class="die-roll">
+            <div class="die-numbers">
+                <div class="die-row die-1">
+                    <input name="D1" type="button" value="1">
+                    <input name="D1" type="button" value="2">
+                    <input name="D1" type="button" value="3">
+                    <input name="D1" type="button" value="4">
+                    <input name="D1" type="button" value="5">
+                    <input name="D1" type="button" value="6">
                 </div>
-                <div class="die_row">
-                    <input type="button" value="1" class="die_2">
-                    <input type="button" value="2" class="die_2">
-                    <input type="button" value="3" class="die_2">
-                    <input type="button" value="4" class="die_2">
-                    <input type="button" value="5" class="die_2">
-                    <input type="button" value="6" class="die_2">
+                <div class="die-row die-2">
+                    <input name="D2" type="button" value="1">
+                    <input name="D2" type="button" value="2">
+                    <input name="D2" type="button" value="3">
+                    <input name="D2" type="button" value="4">
+                    <input name="D2" type="button" value="5">
+                    <input name="D2" type="button" value="6">
                 </div>
-                <div class="die_row">
-                    <input type="button" value="1" class="die_3">
-                    <input type="button" value="2" class="die_3">
-                    <input type="button" value="3" class="die_3">
-                    <input type="button" value="4" class="die_3">
-                    <input type="button" value="5" class="die_3">
-                    <input type="button" value="6" class="die_3">
+                <div class="die-row die-3">
+                    <input name="D3" type="button" value="1">
+                    <input name="D3" type="button" value="2">
+                    <input name="D3" type="button" value="3">
+                    <input name="D3" type="button" value="4">
+                    <input name="D3" type="button" value="5">
+                    <input name="D3" type="button" value="6">
                 </div>
             </div>
-            <input type="button" value="Accept" class="die_accept">
+            <input type="button" value="Accept" class="die-accept">
         </div>
         </form>
     </div>

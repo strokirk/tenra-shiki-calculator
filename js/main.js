@@ -1,39 +1,39 @@
 
-$('.die_1').each(function(index) {
+$('input[name=D1]').each(function(index) {
     $(this).click( function() {
         $('.selected-die-1').removeClass('selected-die-1');
         $(this).addClass('selected-die-1');
     });
 });
-$('.die_2').each(function(index) {
+$('input[name=D2]').each(function(index) {
     $(this).click( function() {
         $('.selected-die-2').removeClass('selected-die-2');
         $(this).addClass('selected-die-2');
     });
 });
-$('.die_3').each(function(index) {
+$('input[name=D3]').each(function(index) {
     $(this).click( function() {
         $('.selected-die-3').removeClass('selected-die-3');
         $(this).addClass('selected-die-3');
     });
 });
-$('.die_accept').click( function() {
+$('.die-accept').click( function() {
     check_if_die_selection_complete();
 });
-$('.die_roll').click( function() {
+$('.die-roll').click( function() {
     // button.trigger("click")
     var roll = Math.floor(Math.random() * 6);
-    $('.die_1').each( function(index) { if (index == roll) {
+    $('input[name=D1]').each( function(index) { if (index == roll) {
         $('.selected-die-1').removeClass('selected-die-1');
         $(this).addClass('selected-die-1');
     }});
     var roll = Math.floor(Math.random() * 6);
-    $('.die_2').each( function(index) { if (index == roll) {
+    $('input[name=D2]').each( function(index) { if (index == roll) {
         $('.selected-die-2').removeClass('selected-die-2');
         $(this).addClass('selected-die-2');
     }});
     var roll = Math.floor(Math.random() * 6);
-    $('.die_3').each( function(index) { if (index == roll) {
+    $('input[name=D3]').each( function(index) { if (index == roll) {
         $('.selected-die-3').removeClass('selected-die-3');
         $(this).addClass('selected-die-3');
     }});
