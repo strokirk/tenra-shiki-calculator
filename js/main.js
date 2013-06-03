@@ -113,9 +113,9 @@ function update_shiki_div() {
         if (power.cost == 0)
             li.append(power.name).addClass("danger");
         else if (power.level > 0)
-            li.append(power.name+" "+power.level).prop("title","Creation points per level: "+power.cost);
+            li.append(power.name+" "+power.level).prop("title",power.cost+" creation points per level");
         else
-            li.append(power.name).prop("title","Creation points: "+power.cost);
+            li.append(power.name).prop("title",power.cost+" creation points");
         ul.append(li);
     }
     
@@ -132,15 +132,17 @@ function save_shiki_div() {
         var li = $('<li>'), text, title;
         if (power.level > 0) {
             text = power.name+" "+power.level; 
-            title = "Creation points per level: "+power.cost;
+            title = power.cost+" creation points per level";
         } else {
             text = power.name; 
-            title = "Creation points: "+power.cost;
+            title = power.cost+" creation points";
         }
         li.append(text).prop("title",title);
         ul.append(li);
     }
     var pinfo = $("<p>Creation points: "+current_shiki.getTotalCost()+"</p>");
+    if (current_shiki.getTotalCost() != 0) 
+        pinfo.append(", Soul cost: "+Math.ceil(current_shiki.getTotalCost()/2))
     
     var danger = [];
     if ("Runaway" in list) danger[danger.length] = "Runaway";
@@ -148,7 +150,7 @@ function save_shiki_div() {
     danger = danger.join(" ");
     if (danger)
         pinfo.append(", <span class='danger'>"+danger+"</span>");
-    if (current_shiki.getTotalCost() != 0)
+    if (current_shiki.getTotalCost() != 0) 
         pinfo.append("<br/>"+"Attributes: "+current_shiki.getAttributes()+", Skills: "+current_shiki.getSkills()+",  Vitality: "+current_shiki.getVitality())
     $("#shiki-power-list").append(pinfo).append(ul);
 };
