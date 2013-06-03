@@ -54,17 +54,17 @@ function check_if_die_selection_complete() {
     }
 };
 
-var shiki_power_list = [];
 var number_of_shiki_powers = 0;
-var shiki_power_dict = {};
+var current_shiki;
 $("#wrapper").append("<div id='shiki-power-list'></div>");
+update_shiki_div();
 
 function get_shiki_power( die_1, die_2, power_die ) {
-    var power = {name: shiki_power_chart[die_1][die_2][0],
-            level: shiki_power_chart[die_1][die_2][power_die],
-            cost: 0};
+    var power = {'name': shiki_power_chart[die_1][die_2][0],
+            'level': shiki_power_chart[die_1][die_2][power_die],
+            'cost': 0};
     if (shiki_powers_cp_per_level.hasOwnProperty(power.name)) {
-        power.cost = shiki_powers_cp_per_level[power.name];
+        power['cost'] = shiki_powers_cp_per_level[power.name];
     }
     return power;
 }
@@ -72,83 +72,89 @@ function get_shiki_power( die_1, die_2, power_die ) {
 var next_roll_mod = 0;
 
 function shiki_power_from_dice() {
+    // see that there is a initialized Shiki object
+    if (!current_shiki) current_shiki = new Shiki();
+    
     number_of_shiki_powers += 1;
     var new_shiki_id = "shiki-"+number_of_shiki_powers+"";
+    // get the die values
     var die_1 = $('.selected-die-1').val();
     var die_2 = $('.selected-die-2').val();
     var die_3 = $('.selected-die-3').val();
-    
     var power = get_shiki_power(die_1, die_2, die_3);
-    if (next_roll_mod == 2) {
-        power.level = power.level * 2;
-    } else if (next_roll_mod == 5) {
-        power.level = Math.ceil(power.level / 2);
-    } 
-    if (power.level > 0) {
-        power.cost = power.level * power.cost;
-    }
     
-    if (die_1 == die_2 && die_2 == 2) {
-        next_roll_mod = 2;
-    } else if (die_1 == die_2 && die_2 == 5) {
-        next_roll_mod = 5;
-    } else {
-        next_roll_mod = 0;
-    }
-    shiki_power_list.push(power);
-    if (shiki_power_dict.hasOwnProperty(power.name)) {
-        shiki_power_dict[power.name] += power.level;
-    } else {
-        shiki_power_dict[power.name] = power.level;
-    }
+    // special cases
+    if (next_roll_mod == 2) power.level = power.level * 2; 
+    else if (next_roll_mod == 5) power.level = Math.ceil(power.level / 2); 
+    
+    if (die_1 == die_2 && die_2 == 2) next_roll_mod = 2;
+    else if (die_1 == die_2 && die_2 == 5) next_roll_mod = 5;
+    else next_roll_mod = 0;
+    
+    current_shiki.addPower( power );
 }
 
 function update_shiki_div() {
-    $("#shiki-power-list").empty();
+    if (!current_shiki) current_shiki = new Shiki();
     
-    var shiki = Shiki( shiki_power_list );
-    $("#shiki-power-list").append("<p>Total shiki cost: "+shiki.getShikiCost()+"</p>");
-    console.log(shiki.getShikiPowers());
-    for (power in shiki_power_dict) {
-        var i = 1;
-        var power_div = "<div id='"+i+"'>" + 
-            power + ", " + shiki_power_dict[power] + "</div>";
-        $("#shiki-power-list").append(power_div);
-        console.log(shiki_power_dict);
-        i += 1;
+    var powerdiv = $("#shiki-power-list");
+    $("#shiki-power-list").append(powerdiv);
+    powerdiv.empty();
+    var ul = $('<ul>');
+    
+    powerdiv.append("<input type='button' value='Save shiki'>");
+    powerdiv.append("<p>Total shiki cost: "+current_shiki.getTotalCost()+"</p>");
+    powerdiv.append(ul);
+    
+    for (var index in current_shiki.powerList) {
+        var power = current_shiki.powerList[index];
+        var li = $('<li>');
+        if (power.cost == 0)
+            li.append(power.name).css('color','red');
+        else if (power.level > 0)
+            li.append(power.name+" "+power.level).prop("title","Creation points per level: "+power.cost);
+        else
+            li.append(power.name).prop("title","Creation points: "+power.cost);
+        ul.append(li);
     }
     
 };
 
- function Shiki( power_list ) {
-    shiki = {};
-    shiki.power_list = power_list;
-    shiki.getShikiCost = function() {
-        var cost = 0;
-        var list = this.getShikiPowers();
-        for (var i=0; i<list.length; i++) {
-            cost += list[i].cost;
+// A class to keep track of the applied shiki powers
+// Saves both a list of discrete classes, and the order they were applied.
+ function Shiki() {
+    this.powerList = [];
+    this.uniquePowerList = {};
+    // add a new shiki power. Should be a {name:,level:,cost:}-style object.
+    this.addPower = function(power) {
+        this.powerList.push(power);
+    };
+    // sum the cost of shiki's powers in creation points
+    this.getTotalCost = function() {
+        var power, cost = 0, uniqueList = this.getShikiPowers();
+        for (var power in uniqueList) {
+            var p = uniqueList[power];
+            if (p.cost != 0)
+                cost += (p.level == 0 ? p.cost : p.level * p.cost);
         }
         return cost;
     }
-    shiki.getShikiPowers = function() {
-        var powers = [];
-        for (var i=0; i<this.power_list.length; i++) {
-            p = this.power_list[i];
-            var found = false;
-            for (var j=0; j<powers.length; j++) {
-                if (powers[j].name == p.name) {
-                    powers[j].level += p.level;
-                    found = true;
-                }
-            }
-            if (!found) {
-                powers.push(p);
-            }
+    // Get a list of unique powers
+    this.getShikiPowers = function() {
+        var power, i, length = this.powerList.length;
+        this.uniquePowerList = {};
+        for (i = 0; i < length; i++) {
+            power = this.powerList[i];
+            if (!(power.name in this.uniquePowerList))
+                this.uniquePowerList[power.name] = {name:power.name, level:power.level, 
+                    cost:power.cost, totalCost:power.cost};
+            else
+                this.uniquePowerList[power.name].level += power.level;
+            if (this.uniquePowerList[power.name].level != 0)
+                this.uniquePowerList[power.name].totalCost += power.level * power.cost;
         }
-        return powers;
+        return this.uniquePowerList;
     }
-    return shiki;
 }
 
 // Shiki creation points
