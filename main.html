@@ -6,11 +6,12 @@
 <body>
     <div id="wrapper">
         <h1>Shiki creation</h1>
-        <p id="description">Roll an ability randomly, or use buttons below to enter die results. 
-        Enter 1d<span class="die-1">6</span><span class="die-2">6</span> ability choice, 
-        1d<span class="die-3">6</span> ability strength, then press "accept".</p>
-        <form>
+        <p>Choose the number of points you want to spend. Roll 3 dice add the ability and add it's cost until the total cost is more than the chosen maximum. Follow any special instructions. Then determine the cost in soul points and write down the shiki's attribute, skill and viltality score.</p>
+        <p>This webapp only covers random creation, and automates some of that process.</p>
+        <p>Maximum creation points = Knowledge × (Skill - 1). <br>(Note that Onmyoujutsu can't have 0 or 1 ranks.)
+        <p>Roll an ability randomly, or use buttons below to enter die results. Enter 1d<span class="die-1">6</span><span class="die-2">6</span> ability choice, 1d<span class="die-3">6</span> ability strength, then press "accept".</p>
         <div id="die-controls">
+        <form>
             <input type="button" value="Roll Dice" class="die-roll">
             <div class="die-numbers">
                 <div class="die-row die-1">
@@ -39,8 +40,8 @@
                 </div>
             </div>
             <input type="button" value="Accept" class="die-accept">
-        </div>
         </form>
+        </div>
     </div>
     
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

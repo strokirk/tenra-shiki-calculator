@@ -214,19 +214,9 @@ function save_shiki_div() {
 // Creation points = Knowledge * Skill modifier
 // Skill modifier = Dots - 1, where 0 or 1 dots is impossible
 
-// Order of events
-// choose Random creation or (Crafted creation)
-// choose maximum creation points
-// Roll
-// Apply ability, add to current cost
-// Check if over max creation points
-// if not, choose to reroll
-// else determine soul cost
-
-var die_1, die_2, die_3; // die_1 is the "Tens" die, die_2 is the "ones" die, die_3 is the "level" die
-
 /* Abilities */
 /* The chart is organized like: die_1: die_2: [title, levels...] */
+// die_1 is the "Tens" die, die_2 is the "ones" die, die_3 is the "level" die
 var shiki_power_chart = {
 1: {1: ['Runaway', 0, 0, 0, 0, 0, 0],
     2: ['Prolong summoning', 1, 2, 3, 4, 5, 6],

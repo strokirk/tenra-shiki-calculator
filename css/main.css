@@ -1,33 +1,47 @@
-#wrapper {
-    width: 600px;
-}
 
-#description {
-    width: 400px;
+#wrapper { width: 400px; }
+#wrapper p { width: 400px; }
+
+#shiki-power-list {
+    border: 1px solid grey;
+    margin-top: 0.5em;
+    padding:0.5em;
 }
 
 #die-controls {
     display: block;
     border: 1px solid black;
-    width: 400px;
-    height: 100px; 
+    overflow: hidden;
+}
+#die-controls, .die-numbers, .die-accept, .die-roll { height: 100px; }
+
+.die-accept,
+.die-roll {
+    padding: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    float: left;
+    width: 100px;
 }
 
-#shiki-power-list {
-    width: 400px;
+.die-numbers {
+    display: block;
+    margin: auto 19px;
+    float: left;
 }
 
 .die-row {
     display:block;
+    width:160px;
     height:33%;
 }
 
 .die-1 input,
 .die-2 input,
 .die-3 input {
-    padding: 0.4em;
-    margin: 0.1em;
-    border: 0.25em solid lightgrey;
+    margin: 0;
+    padding: 5.5px 5px;
+    border: 3px solid lightgrey;
 }
 
 .die-1 input { background-color: #CC0000; }
@@ -42,25 +56,6 @@ input.selected-die-1,
 input.selected-die-2,
 input.selected-die-3  {
     border: 0.25em solid black;
-}
-
-.die-numbers {
-    display: block;
-    height: 100px;
-    width: 190px;
-    padding-left: 10px;
-    margin-top: auto;
-    margin-bottom: auto;
-    float: left;
-}
-
-.die-accept,
-.die-roll {
-    margin-top: auto;
-    margin-bottom: auto;
-    float: left;
-    height: 100%;
-    width: 25%;
 }
 
 .danger {
