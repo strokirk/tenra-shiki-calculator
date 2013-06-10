@@ -13,6 +13,8 @@ $('input[name=D2]').each(function(index) {
 });
 $('input[name=D3]').each(function(index) {
     $(this).click( function() {
+        $(".die-3 :checked").prop("checked", false);
+        $(this).prop("checked", true);
         $('.selected-die-3').removeClass('selected-die-3');
         $(this).addClass('selected-die-3');
     });
@@ -22,27 +24,34 @@ $('.die-accept').click( function() {
 });
 $('.die-roll').click( function() {
     // button.trigger("click")
+    $('.die-row :checked').prop("checked", false);
+    $('.selected-die-1').removeClass('selected-die-1');
+    $('.selected-die-2').removeClass('selected-die-2');
+    $('.selected-die-3').removeClass('selected-die-3');
+
     var roll = Math.floor(Math.random() * 6);
-    $('input[name=D1]').each( function(index) { if (index == roll) {
-        $('.selected-die-1').removeClass('selected-die-1');
-        $(this).addClass('selected-die-1');
-    }});
+    $('input[name=D1]').eq(roll).addClass('selected-die-1');
+    $('input[name=D1]').eq(roll).prop('checked', true);
     var roll = Math.floor(Math.random() * 6);
-    $('input[name=D2]').each( function(index) { if (index == roll) {
-        $('.selected-die-2').removeClass('selected-die-2');
-        $(this).addClass('selected-die-2');
-    }});
+    $('input[name=D2]').eq(roll).addClass('selected-die-2');
+    $('input[name=D2]').eq(roll).prop('checked', true);
     var roll = Math.floor(Math.random() * 6);
-    $('input[name=D3]').each( function(index) { if (index == roll) {
-        $('.selected-die-3').removeClass('selected-die-3');
-        $(this).addClass('selected-die-3');
-    }});
+    $('input[name=D3]').eq(roll).addClass('selected-die-3');
+    $('input[name=D3]').eq(roll).prop('checked', true);
+
     shiki_power_from_dice();
     update_shiki_div();
 });
 function select_die_button( button ) {
     "selected-die-" + $(this).attr("class").charAt($(this).attr("class").length-1);
 };
+function validateInt() {
+    var field = "";
+    // http://blog.stevenlevithan.com/archives/faster-trim-javascript
+    var value = $(field).val().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    var intRegex = /^\d+$/
+    return intRegex.test(value);
+}
 
 function check_if_die_selection_complete() {
     if (($('.selected-die-1').length == 1) &&
