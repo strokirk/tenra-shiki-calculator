@@ -66,7 +66,7 @@ function check_if_die_selection_complete() {
 var number_of_shiki_powers = 0;
 var current_shiki;
 $("#wrapper").append("<div id='shiki-power-list'></div>");
-update_shiki_div();
+reset();
 
 function get_shiki_power( die_1, die_2, power_die ) {
     var power = {'name': shiki_power_chart[die_1][die_2][0],
@@ -103,6 +103,23 @@ function shiki_power_from_dice() {
     current_shiki.addPower( power );
 }
 
+function reset() {
+    current_shiki = new Shiki();
+    
+    var powerdiv = $("#shiki-power-list");
+    powerdiv.empty();
+    var ul = $('<ul>');
+    
+    var save_btn = $("<input id='#save-shiki' type='button' value='Save shiki'>");
+    var reset_btn = $("<input id='#reset' type='button' value='Reset'>");
+    save_btn.click( save_shiki_div );
+    reset_btn.click( reset );
+    powerdiv.append(save_btn);
+    powerdiv.append(reset_btn);
+    powerdiv.append("<p>Total shiki cost: "+current_shiki.getTotalCost()+"</p>");
+    powerdiv.append(ul);
+}
+
 function update_shiki_div() {
     if (!current_shiki) current_shiki = new Shiki();
     
@@ -111,8 +128,11 @@ function update_shiki_div() {
     var ul = $('<ul>');
     
     var save_btn = $("<input id='#save-shiki' type='button' value='Save shiki'>");
+    var reset_btn = $("<input id='#reset' type='button' value='Reset'>");
     save_btn.click( save_shiki_div );
+    reset_btn.click( reset );
     powerdiv.append(save_btn);
+    powerdiv.append(reset_btn);
     powerdiv.append("<p>Total shiki cost: "+current_shiki.getTotalCost()+"</p>");
     powerdiv.append(ul);
     

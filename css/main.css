@@ -14,15 +14,17 @@
     border: 1px solid black;
     overflow: hidden;
 }
-#die-controls, .die-numbers, .die-accept, .die-roll { height: 100px; }
+#die-controls, .die-numbers { height: 100px; }
 
 .die-accept,
 .die-roll {
+    box-sizing:border-box;
+    width: 100px;
+    height: 100px;
     padding: 0;
     margin-top: auto;
     margin-bottom: auto;
     float: left;
-    width: 100px;
 }
 
 .die-numbers {
@@ -30,7 +32,6 @@
     margin: auto 19px;
     float: left;
 }
-
 .die-row {
     display:block;
     width:160px;
