@@ -1,17 +1,18 @@
 
 #wrapper { width: 400px; }
-#wrapper p { width: 400px; }
+#wrapper p { width: 30em; }
 
 #shiki-power-list {
     border: 1px solid grey;
     margin-top: 0.5em;
-    padding:0.5em;
+    padding: 0.5em;
 }
 #shiki-power-list p {margin-top:2px; padding-top:0}
 
 #die-controls {
     display: block;
     border: 1px solid black;
+    margin-bottom: 0.5em;
     overflow: hidden;
 }
 #die-controls, .die-numbers { height: 100px; }
@@ -37,6 +38,10 @@
     width:160px;
     height:33%;
 }
+
+#knowledge { width: 5em; }
+#onmyoujutsu { width: 6em; }
+.warning { color: red; }
 
 .die-1 input,
 .die-2 input,

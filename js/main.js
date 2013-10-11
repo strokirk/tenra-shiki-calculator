@@ -1,4 +1,5 @@
 
+// Register input handlers
 $('input[name=D1]').each(function(index) {
     $(this).click( function() {
         $('.selected-die-1').removeClass('selected-die-1');
@@ -42,16 +43,22 @@ $('.die-roll').click( function() {
     shiki_power_from_dice();
     update_shiki_div();
 });
-function select_die_button( button ) {
-    "selected-die-" + $(this).attr("class").charAt($(this).attr("class").length-1);
-};
-function validateInt() {
-    var field = "";
-    // http://blog.stevenlevithan.com/archives/faster-trim-javascript
-    var value = $(field).val().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-    var intRegex = /^\d+$/
-    return intRegex.test(value);
-}
+$('#knowledge, #onmyoujutsu').change( function() {
+    var knowledge = $('#knowledge');
+    var onmyoujutsu = $('#onmyoujutsu');
+    var reg_k = /^[1-9]\d*$/; // test for input, 1+
+    var reg_o = /^[2-5]$/; // test for input, 2-5
+    knowledge.toggleClass("warning", !reg_k.test(knowledge.val()));
+    onmyoujutsu.toggleClass("warning", !reg_o.test(onmyoujutsu.val()));
+    if (reg_k.test(knowledge.val()) && reg_o.test(onmyoujutsu.val())) {
+        var a = parseInt(knowledge.val(), 10),
+            b = parseInt(onmyoujutsu.val(), 10);
+        max_cp = a * (b-1);
+        $("#max-creation-points").text("= " + max_cp);
+    } else {
+        $("#max-creation-points").text("");
+    }
+});
 
 function check_if_die_selection_complete() {
     if (($('.selected-die-1').length == 1) &&
@@ -63,8 +70,10 @@ function check_if_die_selection_complete() {
     }
 };
 
+var maximum_creation_points = 0;
 var number_of_shiki_powers = 0;
 var current_shiki;
+var saved_shiki = [];
 $("#wrapper").append("<div id='shiki-power-list'></div>");
 reset();
 
@@ -83,7 +92,7 @@ var next_roll_mod = 0;
 function shiki_power_from_dice() {
     // see that there is a initialized Shiki object
     if (!current_shiki) current_shiki = new Shiki();
-    
+
     number_of_shiki_powers += 1;
     var new_shiki_id = "shiki-"+number_of_shiki_powers+"";
     // get the die values
@@ -91,25 +100,25 @@ function shiki_power_from_dice() {
     var die_2 = $('.selected-die-2').val();
     var die_3 = $('.selected-die-3').val();
     var power = get_shiki_power(die_1, die_2, die_3);
-    
+
     // special cases
-    if (next_roll_mod == 2) power.level = power.level * 2; 
-    else if (next_roll_mod == 5) power.level = Math.ceil(power.level / 2); 
-    
+    if (next_roll_mod == 2) power.level = power.level * 2;
+    else if (next_roll_mod == 5) power.level = Math.ceil(power.level / 2);
+
     if (die_1 == die_2 && die_2 == 2) next_roll_mod = 2;
     else if (die_1 == die_2 && die_2 == 5) next_roll_mod = 5;
     else next_roll_mod = 0;
-    
+
     current_shiki.addPower( power );
 }
 
 function reset() {
     current_shiki = new Shiki();
-    
+
     var powerdiv = $("#shiki-power-list");
     powerdiv.empty();
     var ul = $('<ul>');
-    
+
     var save_btn = $("<input id='#save-shiki' type='button' value='Save shiki'>");
     var reset_btn = $("<input id='#reset' type='button' value='Reset'>");
     save_btn.click( save_shiki_div );
@@ -119,14 +128,15 @@ function reset() {
     powerdiv.append("<p>Total shiki cost: "+current_shiki.getTotalCost()+"</p>");
     powerdiv.append(ul);
 }
+$("#new-shiki").click( reset );
 
 function update_shiki_div() {
     if (!current_shiki) current_shiki = new Shiki();
-    
+
     var powerdiv = $("#shiki-power-list");
     powerdiv.empty();
     var ul = $('<ul>');
-    
+
     var save_btn = $("<input id='#save-shiki' type='button' value='Save shiki'>");
     var reset_btn = $("<input id='#reset' type='button' value='Reset'>");
     save_btn.click( save_shiki_div );
@@ -135,7 +145,7 @@ function update_shiki_div() {
     powerdiv.append(reset_btn);
     powerdiv.append("<p>Total shiki cost: "+current_shiki.getTotalCost()+"</p>");
     powerdiv.append(ul);
-    
+
     for (var index in current_shiki.powerList) {
         var power = current_shiki.powerList[index];
         var li = $('<li>');
@@ -147,7 +157,7 @@ function update_shiki_div() {
             li.append(power.name).prop("title",power.cost+" creation points");
         ul.append(li);
     }
-    
+
 };
 
 function save_shiki_div() {
@@ -157,29 +167,29 @@ function save_shiki_div() {
     for (var index in list) {
         var power = list[index];
         if (power.cost == 0) continue; // remove stuff like "roll again"
-        
+
         var li = $('<li>'), text, title;
         if (power.level > 0) {
-            text = power.name+" "+power.level; 
+            text = power.name+" "+power.level;
             title = power.cost+" creation points per level";
         } else {
-            text = power.name; 
+            text = power.name;
             title = power.cost+" creation points";
         }
-        li.append(text).prop("title",title);
+        li.append(text).prop("title", title);
         ul.append(li);
     }
     var pinfo = $("<p>Creation points: "+current_shiki.getTotalCost()+"</p>");
-    if (current_shiki.getTotalCost() != 0) 
+    if (current_shiki.getTotalCost() != 0)
         pinfo.append(", Soul cost: "+Math.ceil(current_shiki.getTotalCost()/2))
-    
+
     var danger = [];
     if ("Runaway" in list) danger[danger.length] = "Runaway";
     if ("The shiki becomes chimera" in list) danger[danger.length] = "Chimera";
     danger = danger.join(" ");
     if (danger)
         pinfo.append(", <span class='danger'>"+danger+"</span>");
-    if (current_shiki.getTotalCost() != 0) 
+    if (current_shiki.getTotalCost() != 0)
         pinfo.append("<br/>"+"Attributes: "+current_shiki.getAttributes()+", Skills: "+current_shiki.getSkills()+",  Vitality: "+current_shiki.getVitality())
     $("#shiki-power-list").append(pinfo).append(ul);
 };
@@ -187,8 +197,16 @@ function save_shiki_div() {
 // A class to keep track of the applied shiki powers
 // Saves both a list of discrete classes, and the order they were applied.
  function Shiki() {
+    this.type = "";
     this.powerList = [];
     this.uniquePowerList = {};
+    this.setType = function(type) {
+        if (type == "random" || type == "crafted") {
+            this.type = type;
+        } else  {
+            throw "Wrong shikigami type";
+        }
+    }
     // add a new shiki power. Should be a {name:,level:,cost:}-style object.
     this.addPower = function(power) {
         this.powerList.push(power);
@@ -210,7 +228,7 @@ function save_shiki_div() {
         for (i = 0; i < length; i++) {
             power = this.powerList[i];
             if (!(power.name in this.uniquePowerList))
-                this.uniquePowerList[power.name] = {name:power.name, level:power.level, 
+                this.uniquePowerList[power.name] = {name:power.name, level:power.level,
                     cost:power.cost, totalCost:power.cost};
             else
                 this.uniquePowerList[power.name].level += power.level;
@@ -219,26 +237,28 @@ function save_shiki_div() {
         }
         return this.uniquePowerList;
     }
-    /* Shiki ability score table: 
+    /* Shiki ability score table:
     CP: Attributes - Skills - Vitality
     1-6:   1-1-2
     7-12:  2-1-2
-    13-18: 3-2-3 
+    13-18: 3-2-3
     19-24: 4-2-4
     25-30: 5-3-5
     31-36: 6-3-6
     37-42: 7-4-7
     for every 6 pts over 42, +1 to Attributes & Vitality */
-    this.getAttributes = function() { 
-        return Math.ceil(this.getTotalCost() / 6); 
+    this.getAttributes = function() {
+        return Math.ceil(this.getTotalCost() / 6);
     }
     this.getSkills = function() {
-        var x = Math.ceil(this.getTotalCost() / 12); return (x > 4) ? 4 : x;
+        var x = Math.min(Math.ceil(this.getTotalCost() / 12), 4);
+        if (this.type == "crafted") return (x > 1) ? x-1 : 1;
+        return x;
     }
-    this.getVitality = function() { 
-        var x = Math.ceil(this.getTotalCost() / 6); return (x < 2) ? 2 : x; 
+    this.getVitality = function() {
+        var x = Math.ceil(this.getTotalCost() / 6); return (x < 2) ? 2 : x;
     }
-    
+
 }
 
 // Shiki creation points
