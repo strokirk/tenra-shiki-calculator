@@ -1,70 +1,125 @@
 
-#wrapper { width: 400px; }
-#wrapper p { width: 30em; }
+#wrapper
+{
+    width: 400px;
+}
+#wrapper p
+{
+    width: 30em;
+}
 
-#shiki-power-list {
+#shiki-power-list
+{
+    margin-top: .5em;
+    padding: .5em;
+
     border: 1px solid grey;
-    margin-top: 0.5em;
-    padding: 0.5em;
 }
-#shiki-power-list p {margin-top:2px; padding-top:0}
+#shiki-power-list p
+{
+    margin-top: 2px; padding-top: 0;
+}
 
-#die-controls {
+#die-controls
+{
     display: block;
-    border: 1px solid black;
-    margin-bottom: 0.5em;
     overflow: hidden;
+
+    margin-bottom: .5em;
+
+    border: 1px solid black;
 }
-#die-controls, .die-numbers { height: 100px; }
+#die-controls,
+.die-numbers
+{
+    height: 100px;
+}
 
 .die-accept,
-.die-roll {
-    box-sizing:border-box;
+.die-roll
+{
+    float: left;
+
+    box-sizing: border-box;
     width: 100px;
     height: 100px;
-    padding: 0;
     margin-top: auto;
     margin-bottom: auto;
-    float: left;
+    padding: 0;
 }
 
-.die-numbers {
+.die-numbers
+{
     display: block;
-    margin: auto 19px;
     float: left;
+
+    margin: auto 19px;
 }
-.die-row {
-    display:block;
-    width:160px;
-    height:33%;
+.die-row
+{
+    display: block;
+
+    width: 160px;
+    height: 33%;
 }
 
-#knowledge { width: 5em; }
-#onmyoujutsu { width: 6em; }
-.warning { color: red; }
+#knowledge
+{
+    width: 5em;
+}
+#onmyoujutsu
+{
+    width: 6em;
+}
+.warning
+{
+    color: red;
+}
 
 .die-1 input,
 .die-2 input,
-.die-3 input {
+.die-3 input
+{
     margin: 0;
     padding: 5.5px 5px;
+
     border: 3px solid lightgrey;
 }
 
-.die-1 input { background-color: #CC0000; }
-.die-2 input { background-color: #00CC00; }
-.die-3 input { background-color: #7777EE; }
+.die-1 input
+{
+    background-color: #c00;
+}
+.die-2 input
+{
+    background-color: #0c0;
+}
+.die-3 input
+{
+    background-color: #77e;
+}
 
-span.die-1 { color: #CC0000; }
-span.die-2 { color: #00CC00; }
-span.die-3 { color: #7777EE; }
+span.die-1
+{
+    color: #c00;
+}
+span.die-2
+{
+    color: #0c0;
+}
+span.die-3
+{
+    color: #77e;
+}
 
 input.selected-die-1,
 input.selected-die-2,
-input.selected-die-3  {
-    border: 0.25em solid black;
+input.selected-die-3
+{
+    border: .25em solid black;
 }
 
-.danger {
-    color:red;
+.danger
+{
+    color: red;
 }
