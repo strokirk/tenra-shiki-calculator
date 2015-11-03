@@ -323,3 +323,21 @@ var shiki_powers_cp_per_level = {
     'Soulfind': 1,
     'Transmutation': 6
 };
+var shiki_power_list = [
+    {"name": 'Additional damage', "cost": 2, "multi": true, "summary": '+1 damage per level.'},
+    {"name": 'Combat ability', "cost": 3, "multi": true, "summary": 'Additional vitality and attributes.'},
+    {"name": 'Explode', "cost": 1, "multi": true, "summary": '1 damage per level, level/2 range in meters'},
+    {"name": 'Flight', "cost": 1, "multi": true, "summary": 'Speed is level x 50-200 meters per minute.'},
+    {"name": 'Gaseous form', "cost": 3, "multi": false, "summary": 'Can transform into vapor'},
+    {"name": 'Phantasm', "cost": 3, "multi": true, "summary": 'Create illusion. Needs Sense Link and Possession.'},
+    {"name": 'Poison', "cost": 3, "multi": true, "summary": 'Inflict Poison, active until shiki is alive.'},
+    {"name": 'Possession', "cost": 3, "multi": true, "summary": 'This ability allows shiki to bind themselves to objects and living things. Resist with Spirit: Willpower.'},
+    {"name": 'Prolong summoning', "cost": 3, "multi": true, "summary": 'Increase summon time from Spirit minutes to Spirit x (Level + 1) minutes.'},
+    {"name": 'Ranged attack', "cost": 2, "multi": true, "summary": 'Requires Additional damage.'},
+    {"name": 'Regeneration', "cost": 3, "multi": true, "summary": 'The shiki can heal 1 vitality per level per minute.'},
+    {"name": 'Sense link', "cost": 0, "multi": false, "summary": ''},
+    {"name": 'Shapechange', "cost": 5, "multi": false, "summary": 'Requires Sense Link. Takes one minute to change.'},
+    {"name": 'Shiki destroyer', "cost": 5, "multi": true, "summary": ''},
+    {"name": 'Soulfind', "cost": 1, "multi": true, "summary": 'Can sense all lifeforms, range is 10m x level.'},
+    {"name": 'Transmutation', "cost": 6, "multi": true, "summary": ''}
+]
