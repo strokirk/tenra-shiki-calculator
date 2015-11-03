@@ -196,7 +196,7 @@ function save_shiki_div() {
 
 // A class to keep track of the applied shiki powers
 // Saves both a list of discrete classes, and the order they were applied.
- function Shiki() {
+function Shiki() {
     this.type = "";
     this.powerList = [];
     this.uniquePowerList = {};
@@ -209,7 +209,18 @@ function save_shiki_div() {
     }
     // add a new shiki power. Should be a {name:,level:,cost:}-style object.
     this.addPower = function(power) {
-        this.powerList.push(power);
+        var found = false;
+        // See if we have already added this power, and it is a single-use power
+        for (var i = 0, len = shiki_power_list.length; i < len; i++) {
+           if (shiki_power_list[i].name == power.name) {
+               for (var j = 0, len = this.powerList.length; j < len; j++) {
+                   if (this.powerList[j].name == shiki_power_list[i].name) {
+                       if (!shiki_power_list[i].multi) found = true;
+                   }
+               }
+           }
+        }
+        if (!found) this.powerList.push(power);
     };
     // sum the cost of shiki's powers in creation points
     this.getTotalCost = function() {
@@ -275,11 +286,11 @@ var shiki_power_chart = {
     4: ['Ranged attack', 1, 2, 3, 4, 5, 6],
     5: ['Transmutation', 1, 2, 3, 4, 5, 6],
     6: ['Combat ability', 1, 2, 3, 4, 5, 6]},
-2: {1: ['Posession', 1, 2, 3, 4, 5, 6],
+2: {1: ['Possession', 1, 2, 3, 4, 5, 6],
     2: ['Roll again, and double the ability and cost rolled', 0, 0, 0, 0, 0],
     3: ['Poison', 1, 2, 3, 4, 5, 6],
-    4: ['Flying', 1, 2, 3, 4, 5, 6],
-    5: ['Posession', 1, 3, 3, 5, 5, 10],
+    4: ['Flight', 1, 2, 3, 4, 5, 6],
+    5: ['Possession', 1, 3, 3, 5, 5, 10],
     6: ['Shapechange', 0, 0, 0, 0, 0, 0]},
 3: {1: ['Prolong summoning', 1, 3, 3, 5, 5, 10],
     2: ['Phantasm', 1, 2, 3, 4, 5, 6],
@@ -294,7 +305,7 @@ var shiki_power_chart = {
     5: ['Gaseous form', 0, 0, 0, 0, 0, 0],
     6: ['Phantasm', 1, 1, 3, 3, 10, 10]},
 5: {1: ['Explode', 1, 2, 3, 4, 5, 6],
-    2: ['Flying', 1, 3, 5, 5, 10, 15],
+    2: ['Flight', 1, 3, 5, 5, 10, 15],
     3: ['Shapechange', 1, 2, 3, 4, 5, 6],
     4: ['Transmutation', 1, 3, 3, 5, 5, 10],
     5: ['Roll again, and halve the ability and cost rolled', 0, 0, 0, 0, 0, 0],
@@ -310,11 +321,11 @@ var shiki_powers_cp_per_level = {
     'Additional damage': 2,
     'Combat ability': 3,
     'Explode': 1,
-    'Flying': 1,
+    'Flight': 1,
     'Gaseous form': 3,
     'Phantasm': 3,
     'Poison': 3,
-    'Posession': 3,
+    'Possession': 3,
     'Prolong summoning': 3,
     'Ranged attack': 2,
     'Regeneration': 3,
@@ -340,4 +351,4 @@ var shiki_power_list = [
     {"name": 'Shiki destroyer', "cost": 5, "multi": true, "summary": ''},
     {"name": 'Soulfind', "cost": 1, "multi": true, "summary": 'Can sense all lifeforms, range is 10m x level.'},
     {"name": 'Transmutation', "cost": 6, "multi": true, "summary": ''}
-]
+];
